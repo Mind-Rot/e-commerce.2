@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EditPost from "./EditPost";
 
 
-const EditPostButton = ({  postId }) => {
+const EditPostButton = ({ isAdmin, postId }) => {
     const [showForm, setShowForm] = useState(false);
   
     const handleClick = () => {
@@ -11,7 +11,7 @@ const EditPostButton = ({  postId }) => {
   
     return (
       <div>
-        {  !showForm && (
+        {isAdmin && !showForm && (
           <button onClick={handleClick}>Edit Post</button>
         )}
         {showForm && <EditPost postId={postId} />}
@@ -19,4 +19,4 @@ const EditPostButton = ({  postId }) => {
     );
   };
 
-  export default EditPostButton;
+  export default EditPostButton

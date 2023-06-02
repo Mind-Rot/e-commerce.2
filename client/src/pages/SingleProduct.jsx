@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {getProductById} from '../api/products';
 import EditPostButton from "../components/EditPostButton";
+
 import '../css/SingleProduct.css';
 
 function SingleProduct() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState('7');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const shoeSizes = [];
   for (let i = 7; i <= 13; i += 0.5) {
@@ -59,7 +61,8 @@ function SingleProduct() {
         <p className="product-sizes">Sizes and Accessories: {product.sizesaccessories}</p>
         <p className="product-price">Price: {product.price}</p>
         <button className="cart-button" onClick={() => addToCart(product, selectedSize)}>Add to Cart</button>
-        <EditPostButton/>
+        {isAdmin && <DeletePost className="cart-button" id={id} isAdmin={isAdmin} />}
+        <EditPostButton className="cart-button"/>
       </div>
     </div>
     </div>

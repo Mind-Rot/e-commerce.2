@@ -1,54 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser, loginUser } from '../api/users';
+import AdminFunctions from '../components/Admin';
 import '../css/Users.css';
 
 
-function User({ setToken, setUser, setAdmin }) {  // added setAdmin
+function User({ setToken, setUser, setAdmin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState("");
-  const [secretKey, setSecretKey] = useState("");
+  const [userType, setUserType] = useState('');
+  const [inputSecretKey, setInputSecretKey] = useState('');
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+ 
 
-  const adminLogin = async (e) => { // Add async keyword
-    e.preventDefault();
-
-    try {
-      const isAdmin = await checkAdmin();
-
-      if (secretKey !== "12345!") { //secret key here
-        alert("Invalid Admin");
-      } else {
-        setAdmin(true);
-        localStorage.setItem('admin', true);
-        alert("Admin Code Authentication");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Error: Failed to authenticate admin")
-    }
-  };
   const register = async () => {
-    try {
-      const data = await createUser(username, password);
-      if (data && data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('userId', data.user.id);
-        setToken(data.token);
-        setUser(data.user); 
-        setUsername('');
-        setPassword('');
-        alert('Register Success!');
-      } else {
-        console.error('Failed to create user');
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+        try {
+          const data = await createUser(username, password);
+          if (data && data.token) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.user.id);
+            setToken(data.token);
+            setUser(data.user);
+            setUsername('');
+            setPassword('');
+            alert('Register Success!');
+          } else {
+            console.error('Failed to create user');
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
 
-  const login = async () => {
+    const login = async () => {
     try {
       const data = await loginUser(username, password);
       console.log(data);
@@ -56,16 +41,16 @@ function User({ setToken, setUser, setAdmin }) {  // added setAdmin
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.user.id);
         setToken(data.token);
-        setUser(data.user); 
+        setUser(data.user);
         setUsername('');
         setPassword('');
         alert('Login Success! Welcome to SHOENSTAR!');
-        
-        if (userType === "Admin") {
-          adminLogin();
+
+        if (userType === 'Admin') {
+          setIsAdmin(true);
+           alert('Admin Authentication Complete!');
         }
-    
-      }else {
+      } else {
         console.error('Invalid username or password');
       }
     } catch (err) {
@@ -73,22 +58,21 @@ function User({ setToken, setUser, setAdmin }) {  // added setAdmin
     }
   };
 
-
-  const logout = () => {
+    const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    localStorage.removeItem('admin');  // remove admin status
+    localStorage.removeItem('admin');
     setToken('');
     setUser(null);
-    setAdmin(false);  // reset admin status
+    setAdmin(false);
   };
 
   return (
-<div className="User">
-  <div className="card">
-    <h1>Sign in</h1>
-    <div className="input-group">
-    <div>
+    <div className="User">
+       <div className="card">
+         <h1>Sign in</h1>
+         <div className="input-group">
+         <div>
             Register As
             <input
               type="radio"
@@ -105,31 +89,42 @@ function User({ setToken, setUser, setAdmin }) {  // added setAdmin
             />
             Admin
           </div>
-          {userType == "Admin" ? (
+          {userType === 'Admin' ? (
             <div className="mb-3">
               <label>Secret Key</label>
               <input
                 type="text"
                 className="form-control"
                 placeholder="Secret Key"
-                onChange={(e) => setSecretKey(e.target.value)}
+                value={inputSecretKey}
+                onChange={(e) => setInputSecretKey(e.target.value)}
               />
             </div>
           ) : null}
-          
-      <label htmlFor="username">Username</label>
-      <input id="username" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+              
+          <label htmlFor="username">Username</label>
+          <input 
+          id="username" 
+          type="text" 
+          placeholder="Username" 
+          value={username} 
+          onChange={(e) => setUsername(e.target.value)} />
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Password</label>
+          <input 
+          id="password" 
+          type="password" 
+          placeholder="Password" 
+          value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <button onClick={register}>Register</button>
+        <button onClick={login}>Login</button>
+        <button onClick={logout}>Logout</button>
+      </div>
+      {isAdmin && <AdminFunctions setAdmin={setIsAdmin} secretKey={inputSecretKey}/>}
     </div>
-    <div className="input-group">
-      <label htmlFor="password">Password</label>
-      <input id="password" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-    </div>
-    <button onClick={register}>Register</button>
-    <button onClick={login}>Login</button>
-    <button onClick={logout}>Logout</button>
-  </div>
-</div>
-  );
-}
+      );
+    }
 
 export default User;

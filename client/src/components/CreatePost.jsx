@@ -1,63 +1,50 @@
 import React, { useState } from "react";
-
+import { useNavigate} from "react-router-dom";
+import { createProduct } from "../api/products";
+import '../css/CreateForm.css';
 
 
 const CreatePost = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [shoeFeatures, setShoeFeatures] = useState("");
   const [materialQuality, setMaterialQuality] = useState("");
   const [sizesAccesories, setSizesAccesories] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [image, setImage] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [imagePath, setImagePath] = useState(null);
 
-  const handleClick = () => {
-    setShowForm(true);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    console.log("Form submitted");
+    console.log("Values:", name, shoeFeatures, materialQuality, sizesAccesories, price, category, imagePath);
+
     try {
-      const token = window.localStorage.getItem("token");
-
-      if (!token) {
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("shoeFeatures", shoeFeatures);
-      formData.append("materialQuality", materialQuality);
-      formData.append("sizesAccesories", sizesAccesories);
-      formData.append("price", price);
-      formData.append("category", category);
-      formData.append("image", image);
-
-      const response = await fetch(`${BASE_URL}/products/admin/create`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add product");
-      }
-
-      const createdProduct = await response.json();
-      console.log("Product added successfully:", createdProduct);
+      await createProduct(
+        name,
+        shoeFeatures,
+        materialQuality,
+        sizesAccesories,
+        price,
+        category,
+        imagePath
+      );
+      console.log("Product created successfully");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Failed to create product:", error);
     }
   };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      {showForm && (
-        <>
-          <div>
+  
+   if (!isAdmin) {
+    return null; // Render nothing if not an admin
+  }
+  
+    return (
+      <form className="form" onSubmit={handleSubmit()}>
+    <div ClassName="card"> 
+      <h1>Create Post</h1> 
+      <div cCame="input-group">          
+        <div>
             <label>Name:</label>
             <input
               type="text"
@@ -65,8 +52,8 @@ const CreatePost = () => {
               onChange={(e) => setName(e.target.value)}
               required
             />
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Shoe Features:</label>
             <input
               type="text"
@@ -74,8 +61,8 @@ const CreatePost = () => {
               onChange={(e) => setShoeFeatures(e.target.value)}
               required
             />
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Material Quality:</label>
             <input
               type="text"
@@ -83,8 +70,8 @@ const CreatePost = () => {
               onChange={(e) => setMaterialQuality(e.target.value)}
               required
             />
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Sizes & Accessories:</label>
             <input
               type="text"
@@ -92,8 +79,8 @@ const CreatePost = () => {
               onChange={(e) => setSizesAccesories(e.target.value)}
               required
             />
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Price:</label>
             <input
               type="number"
@@ -101,8 +88,8 @@ const CreatePost = () => {
               onChange={(e) => setPrice(e.target.value)}
               required
             />
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Category:</label>
             <select
               value={category}
@@ -114,22 +101,24 @@ const CreatePost = () => {
               <option value="Women">Women</option>
               <option value="Sale">Sale</option>
             </select>
-          </div>
-          <div>
+        </div>
+        <div>
             <label>Picture:</label>
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
+              onChange={(e) => setImagePath(e.target.files[0])}
               required
             />
-          </div>
-          <button type="submit">Post</button>
-        </>
-      )}
-      {!showForm && <button onClick={handleClick}>Create Post</button>}
-    </form>
+        </div>
+      </div>
+      <div ClassName="post-button">
+         <button type="submit">Post</button>
+      </div>
+    </div>
+  </form>
   );
 };
+
 
 export default CreatePost;

@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import PostButton from "../components/PostButton";
+import CreatePost from "../components/CreatePost";
 import '../css/Home.css';
 
 function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [previousImageIndex, setPreviousImageIndex] = useState(null);
   const images = ["homepic.png", "homepic2.png", "homepic3.png", "homepic4.png"];
+  const [showForm, setShowForm] = useState(false);
+
+  const handleClick = () => {
+    if (!showForm) {
+      setShowForm(true);
+    }
+  };
+
+  const handleFormClose = () => {
+    setShowForm(false);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,8 +42,22 @@ function Home() {
                 ))}
                 <div className='header-content'>
                     <h1 className='header-title'>RUN AND NEVER STOP!</h1>
-                    <button className='header-button'>START SHOPPING</button>
-                    <PostButton /> 
+                    
+                    
+                    
+                    
+                    
+                    {!showForm && (
+  <button type="button" className="post-button" onClick={handleClick}>
+    Create Post
+  </button>
+)}
+                  {showForm && <CreatePost onClose={handleFormClose} />}
+
+
+
+
+
                 </div>
             </div>
         </div>
