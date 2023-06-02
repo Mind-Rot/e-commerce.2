@@ -25,6 +25,7 @@ function User({ setToken, setUser, setAdmin }) {
         alert('Register Success!');
         if (userType === 'Admin') {
           setInputSecretKey("12345!"); // secret key is here
+          setIsAdmin(true);
           alert('Admin Register Success!');
         }
       } else {
@@ -38,17 +39,6 @@ function User({ setToken, setUser, setAdmin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      if (userType === 'Admin') {
-        const isAdmin = await checkAdmin("12345!");
-        if (isAdmin) {
-          setIsAdmin(true);
-          localStorage.setItem('admin', true);
-          alert('Admin Code Authentication');
-        } else {
-          alert('Invalid Admin');
-        }
-      }
-
       const userData = await loginUser(username, password);
       console.log(userData);
       if (userData && userData.token) {
@@ -59,6 +49,15 @@ function User({ setToken, setUser, setAdmin }) {
         setUsername('');
         setPassword('');
         alert('Login Success! Welcome to SHOENSTAR!');
+        if (userType === 'Admin') {
+          const isAdmin = await checkAdmin('12345!');
+          if (isAdmin) {
+            localStorage.setItem('isAdmin', true);
+            alert('Admin Code Authentication');
+          } else {
+            alert('Invalid Admin');
+          }
+        }
       } else {
         console.error('Invalid username or password');
       }
@@ -138,7 +137,7 @@ function User({ setToken, setUser, setAdmin }) {
         </form>
         <button onClick={handleLogout}>Logout</button>
       </div>
-      {isAdmin && <AdminFunctions setAdmin={setIsAdmin} secretKey={inputSecretKey} />}
+      {isAdmin && <p>Admin logged in</p>}
     </div>
   );
 }
