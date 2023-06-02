@@ -85,7 +85,10 @@ function SingleProduct({ token, isAdmin }) {
           <DeletePost id={id} token={token} isAdmin={isAdmin}>
             Delete Post
           </DeletePost>
-          <EditPost postId={id}>Edit Post</EditPost>
+          
+          <EditPost postId={id}>
+            Edit Post
+            </EditPost>
         </div>
       </div>
     </div>

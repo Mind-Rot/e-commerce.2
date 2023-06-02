@@ -35,12 +35,6 @@ function Products() {
     fetchProducts();
   }, [category]);
 
-  // useEffect(() => {
-  //   const setCategory = async () => {
-
-  //   };
-  //   setCategory();
-  // }, [category, allProducts]);
 
 
   // Move currentProducts declaration here

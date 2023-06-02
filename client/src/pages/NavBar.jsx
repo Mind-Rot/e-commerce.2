@@ -36,7 +36,7 @@ const NavBar = () => {
           <NavLink to="/shop/women">WOMEN</NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/shop/sale">ALL SHOES</NavLink>
+          <NavLink to="/shop/sale">Sale</NavLink>
         </li>
         <li className="nav-item">
           <Link to={`/cart/${userId}`} onClick={handleCartClick}>CART</Link>

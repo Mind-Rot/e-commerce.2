@@ -12,34 +12,32 @@ const EditPost = ({ id }) => {
   const [newImagePath, setNewImagePath] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const handleUpdate = async () => {
+  
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if ((!newImagePath.endsWith('.png')) && (!newImagePath == undefined)) {
+      console.error('Please provide a valid PNG image path.');
+      return;
+    }
+
     try {
-      const success = await updateProduct(
-        id,
+      await updateProduct(
         newName,
-        newShoeFeatures,
+        newShoeFeatures, // Update the variable name to match the state variable
         newMaterialQuality,
         newSizesAccesories,
         newPrice,
         newCategory,
-        newImagePath
+        newImagePath,
       );
-
-      if (success) {
-        console.log("Post updated successfully");
-        // Do something after successful update
-      } else {
-        throw new Error("Failed to update post");
-      }
+      // Handle success or redirect to another page
+      console.log('Product created successfully!');// this pops out
     } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isFormValid) {
-      handleUpdate();
+      // Handle error
+      console.error('Failed to create product:', error);
     }
   };
 
@@ -70,16 +68,26 @@ const EditPost = ({ id }) => {
   };
 
   useEffect(() => {
-    setIsFormValid(
-      newName !== "" ||
-      newShoeFeatures !== "" ||
-      newMaterialQuality !== "" ||
-      newSizesAccesories !== "" ||
-      newPrice !== "" ||
-      newCategory !== "" ||
-      newImagePath !== null
-    );
-  }, [newName, newShoeFeatures, newMaterialQuality, newSizesAccesories, newPrice, newCategory, newImagePath]);
+    const fieldsWithValue = [
+      newName,
+      newShoeFeatures,
+      newMaterialQuality,
+      newSizesAccesories,
+      newPrice,
+      newCategory,
+      newImagePath,
+    ].filter((field) => field !== "");
+
+    setIsFormValid(fieldsWithValue.length >= 1);
+  }, [
+    newName,
+    newShoeFeatures,
+    newMaterialQuality,
+    newSizesAccesories,
+    newPrice,
+    newCategory,
+    newImagePath,
+  ]);
 
 
   return (
@@ -140,17 +148,17 @@ const EditPost = ({ id }) => {
               onChange={handleInputChange}
             >
               <option value="">Select category</option>
-              <option value="Men">Men</option>
-              <option value="Women">Women</option>
-              <option value="Sale">Sale</option>
+              <option value="men">Men</option>
+              <option value="women">Women</option>
+              <option value="sale">Sale</option>
             </select>
           </div>
           <div>
-            <label>Picture:</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setNewImagePath(e.target.files[0])}
+            <label>Picture (png):</label>
+            <input 
+            type="text" 
+            value={newImagePath} 
+            onChange={(e) => setNewImagePath(e.target.value)} 
             />
           </div>
         </div>

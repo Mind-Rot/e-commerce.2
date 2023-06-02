@@ -7,6 +7,7 @@ function Home() {
   const [previousImageIndex, setPreviousImageIndex] = useState(null);
   const images = ["homepic.png", "homepic2.png", "homepic3.png", "homepic4.png"];
   const [showForm, setShowForm] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);//createPost button appears when isAdmin is true
 
   const handleClick = () => {
     if (!showForm) {
@@ -27,6 +28,12 @@ function Home() {
     return () => clearInterval(timer);
   }, [currentImageIndex]);
 
+  useEffect(() => {
+    // Check if the user has the isAdmin user state
+    const admin = localStorage.getItem('admin');
+    setIsAdmin(isAdmin === 'true');
+  }, []);
+
   return (
     <div className="home">
         <div className='header'>
@@ -43,7 +50,7 @@ function Home() {
                 <div className='header-content'>
                     <h1 className='header-title'>RUN AND NEVER STOP!</h1>
 
-                    {!showForm && (
+                    {!showForm && isAdmin && (
                     <button type="button" className="post-button" onClick={handleClick}  >
                     Create Post
                     </button>
