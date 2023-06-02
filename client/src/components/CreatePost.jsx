@@ -35,9 +35,6 @@ const CreatePost = () => {
     }
   };
   
-   if (!isAdmin) {
-    return null; // Render nothing if not an admin
-  }
   
     return (
       <form className="form" onSubmit={handleSubmit()}>

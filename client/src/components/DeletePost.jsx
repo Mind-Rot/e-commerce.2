@@ -21,10 +21,6 @@ const DeletePost = ({ id, token, isAdmin }) => {
     }
   };
 
-  if (!isAdmin) {
-    return null; // Render nothing if not an admin
-  }
-
   return (
     <button className="delete" onClick={handleRemove}>
       Delete Post

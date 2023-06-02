@@ -1,147 +1,127 @@
 import React, { useState, useEffect } from "react";
 
-const EditPost = ({ postId }) => {
-  const [name, setName] = useState("");
-  const [shoeFeatures, setShoeFeatures] = useState("");
-  const [materialQuality, setMaterialQuality] = useState("");
-  const [sizesAccesories, setSizesAccesories] = useState("");
-  const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
-  const [imagePath, setImagePath] = useState("");
-  const [showForm, setShowForm] = useState(false);
+const EditPost = ({ id }) => {
+  const [newName, setNewName] = useState("");
+  const [newShoeFeatures, setNewShoeFeatures] = useState("");
+  const [newMaterialQuality, setNewMaterialQuality] = useState("");
+  const [newSizesAccesories, setNewSizesAccesories] = useState("");
+  const [newPrice, setNewPrice] = useState("");
+  const [newCategory, setNewCategory] = useState("");
+  const [newImagePath, setNewImagePath] = useState("");
 
-  useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const response = await fetch(`/products/${postId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch post data");
-        }
-        const postData = await response.json();
-        setName(postData.name);
-        setShoeFeatures(postData.shoeFeatures);
-        setMaterialQuality(postData.materialQuality);
-        setSizesAccesories(postData.sizesAccesories);
-        setPrice(postData.price);
-        setCategory(postData.category);
-        setImagePath(postData.imagePath);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    fetchPostData();
-  }, [postId]);
-
-  const handleClick = () => {
-    setShowForm(true);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleUpdate = async () => {
     try {
-      const token = window.localStorage.getItem("token");
-
-      if (!token) {
-        return;
-      }
-
-      const updateData = {
-        name: name || undefined,
-        shoeFeatures: shoeFeatures || undefined,
-        materialQuality: materialQuality || undefined,
-        sizesAccesories: sizesAccesories || undefined,
-        price: price || undefined,
-        category: category || undefined,
-        imagePath: imagePath || undefined,
-      };
-
-      const response = await fetch(`${BASE_URL}/products/${postId}`, {
+      const response = await fetch(`${BASE_URL}/api/products/{id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(updateData),
+        body: JSON.stringify({
+          name: newName,
+          shoeFeatures: newShoeFeatures,
+          materialQuality: newMaterialQuality,
+          sizesAccesories: newSizesAccesories,
+          price: newPrice,
+          category: newCategory,
+          imagePath: newImagePath,
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update the post");
+      if (response.ok) {
+        console.log("Post updated successfully");
+        // Do something after successful update
+      } else {
+        throw new Error("Failed to update post");
       }
-
-      const updatedPost = await response.json();
-      console.log("Post updated successfully:", updatedPost);
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleUpdate();
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      {showForm && (
-        <>
-          <div>
-            <label>Name:</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Shoe Features:</label>
-            <input
-              type="text"
-              value={shoeFeatures}
-              onChange={(e) => setShoeFeatures(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Material Quality:</label>
-            <input
-              type="text"
-              value={materialQuality}
-              onChange={(e) => setMaterialQuality(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Sizes & Accessories:</label>
-            <input
-              type="text"
-              value={sizesAccesories}
-              onChange={(e) => setSizesAccesories(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Price:</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Category:</label>
-            <input
-              type="text"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Picture:</label>
-            <input
-              type="text"
-              value={imagePath}
-              onChange={(e) => setImagePath(e.target.value)}
-            />
-          </div>
-          <button type="submit">Update Post</button>
-        </>
-      )}
-      {!showForm && <button onClick={handleClick}>Edit Post</button>}
-    </form>
-  );
+    <form className="form" onSubmit={handleSubmit}>
+  <div ClassName="card"> 
+    <h1>Edit Post</h1> 
+    <div cCame="input-group">          
+      <div>
+          <label>Name:</label>
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            required
+          />
+      </div>
+      <div>
+          <label>Shoe Features:</label>
+          <input
+            type="text"
+            value={newShoeFeatures}
+            onChange={(e) => setNewShoeFeatures(e.target.value)}
+            required
+          />
+      </div>
+      <div>
+          <label>Material Quality:</label>
+          <input
+            type="text"
+            value={newMaterialQuality}
+            onChange={(e) => setNewMaterialQuality(e.target.value)}
+            required
+          />
+      </div>
+      <div>
+          <label>Sizes & Accessories:</label>
+          <input
+            type="text"
+            value={newSizesAccesories}
+            onChange={(e) => setNewSizesAccesories(e.target.value)}
+            required
+          />
+      </div>
+      <div>
+          <label>Price:</label>
+          <input
+            type="number"
+            value={newPrice}
+            onChange={(e) => setNewPrice(e.target.value)}
+            required
+          />
+      </div>
+      <div>
+          <label>Category:</label>
+          <select
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            required
+          >
+            <option value="">Select category</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Sale">Sale</option>
+          </select>
+      </div>
+      <div>
+          <label>Picture:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setNewImagePath(e.target.files[0])}
+            required
+          />
+      </div>
+    </div>
+    <div ClassName="post-button">
+       <button type="submit">Post</button>
+    </div>
+  </div>
+</form>
+);
 };
 
 export default EditPost;
