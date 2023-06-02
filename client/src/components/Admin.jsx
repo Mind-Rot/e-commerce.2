@@ -1,28 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function AdminFunctions({ setAdmin, secretKey })  {
-    const [inputSecretKey, setInputSecretKey] = useState('');
+const Admin = ({ isAdmin, children }) => {
+  if (!isAdmin) {
+    return null; // Return null or render an error message if the user is not an admin
+  }
 
+  return <>{children}</>; // Render the wrapped components if the user is an admin
+};
 
-  const adminLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      if (inputSecretKey !== secretKey)
-       {
-        alert('Invalid Admin');
-      } 
-      else {
-        setAdmin(true);
-        localStorage.setItem('admin', true);
-        alert('Admin Code Authentication');
-      }
-    } 
-    catch (error) {
-      console.error(error);
-      alert('Error: Failed to authenticate admin');
-    }
-  };
-}
-
-export default AdminFunctions;
+export default Admin;

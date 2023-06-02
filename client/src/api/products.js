@@ -7,7 +7,7 @@ export async function createProduct(name, shoeFeatures, materialQuality, sizesAc
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: userType === 'Admin'
+        // Authorization: userType === 'Admin'
       },
       body: JSON.stringify({
         name,

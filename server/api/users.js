@@ -62,4 +62,14 @@ router.get('/username/:username', async (req, res, next) => {
   }
 });
 
+// Get: api/users/admin/authenticate
+router.post('/admin/authenticate', async (req, res, next) => {
+  const { secretKey } = req.body;
+
+  // Compare the secretKey with the actual secret key that grants admin privileges
+  const isAdmin = secretKey === 'your_secret_key'; // Replace 'your_secret_key' with the actual secret key
+
+  res.json({ isAdmin });
+});
+
 module.exports = router;

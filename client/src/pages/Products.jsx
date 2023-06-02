@@ -7,6 +7,7 @@ import '../css/Products.css';
 
 function Products() {
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(9);
   const [userId, setUserId] = useState('');
@@ -34,11 +35,20 @@ function Products() {
     fetchProducts();
   }, [category]);
 
+  // useEffect(() => {
+  //   const setCategory = async () => {
+
+  //   };
+  //   setCategory();
+  // }, [category, allProducts]);
+
+
+  // Move currentProducts declaration here
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleAddToCart = (productId, quantity, imageUrl, price) => {
     console.log(productId, quantity, imageUrl, price);
@@ -48,7 +58,6 @@ function Products() {
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
   };
-
 
   return (
     <>

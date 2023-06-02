@@ -80,26 +80,21 @@ export async function getUserByUsername(username) {
 }
 
 // Get user isAdmin value
-export const checkAdmin = async () => {
-  const token = window.localStorage.getItem("token");
-  if (!token) {
-    return;
-  }
+export const checkAdmin = async (secretKey) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/admin`, {
-      method: "GET",
+    const response = await fetch(`${BASE_URL}/admin/authenticate`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ secretKey }),
     });
 
     if (!response.ok) {
-      throw new Error("Error fetching isAdmin value");
+      throw new Error('Error fetching isAdmin value');
     }
 
-    const isAdmin = await response.json();
-
+    const { isAdmin } = await response.json();
     return isAdmin;
   } catch (error) {
     console.error(error);

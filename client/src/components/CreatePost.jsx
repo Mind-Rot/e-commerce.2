@@ -30,7 +30,7 @@ const CreatePost = () => {
         imagePath,
       );
       // Handle success or redirect to another page
-      console.log('Product created successfully!');
+      console.log('Product created successfully!');// this pops out
     } catch (error) {
       // Handle error
       console.error('Failed to create product:', error);
@@ -80,9 +80,9 @@ const CreatePost = () => {
       Category:
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">Select Category</option>
-          <option value="Men">Men</option>
-          <option value="Women">Women</option>
-          <option value="Sale">Sale</option>
+          <option value="men">Men</option>
+          <option value="women">Women</option>
+          <option value="sale">Sale</option>
         </select>
       </label>
       <br />
