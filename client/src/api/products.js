@@ -69,7 +69,11 @@ export async function updateProduct(id, name, shoeFeatures, materialQuality, siz
       }),
     });
 
-    return response.status === 204;
+    if(response.status === 204) {
+      return true;
+    }else{
+      throw new Error("Failed while updating product");
+    }
   } catch (error) {
     console.error(error.message || "Failed to update product");
   }

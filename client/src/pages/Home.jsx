@@ -44,7 +44,7 @@ function Home() {
                     <h1 className='header-title'>RUN AND NEVER STOP!</h1>
 
                     {!showForm && (
-  <button type="button" className="post-button" onClick={handleClick}>
+  <button type="button" className="post-button" onClick={handleClick}  >
     Create Post
   </button>
 )}

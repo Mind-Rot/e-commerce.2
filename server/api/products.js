@@ -75,7 +75,8 @@ router.put('/:id', upload.single('image'), async (req, res, next) => {
 
     res.sendStatus(204);
   } catch (error) {
-    next(error);
+    console.error(error.message || "Product update failed");
+    res.status(500).json({ error: "Update to product failed" });
   }
 });
   
