@@ -27,7 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-full-page": "^0.1.12",
-    "react-fullpage": "^0.1.1",
+    "react-fullpage": "^0.1.13",
     "react-router-dom": "^6.11.2",
     "router-dom": "^2.2.11",
     "token": "^0.1.0",
